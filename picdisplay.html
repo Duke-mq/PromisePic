@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test</title>
+</head>
+<style>
+    #btn {
+        text-align: center;
+    }
+</style>
+<body>
+<div id="btn">
+    <button onclick="load()">点击按钮</button>
+    <hr/>
+</div>
+<div id="photo"></div>
+</body>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.26.0/axios.js"></script>
+<script>
+    let firstPromise = axios.get(api_a)
+    let secondPromiise = axios.get(api_b)
+    function loadImage(src) {
+        const promise = new Promise((resolve, reject) => {
+            const img = document.createElement('img');
+            img.onload = function () {
+                resolve(img);
+            }
+            img.onerror = function () {
+                const error = new Error(`图片加载失败，url为：${src}`)
+                reject(error);
+            }
+            img.src = src;
+        });
+        return promise;
+    }
+    function load() {
+        Promise.all([firstPromise, secondPromiise]).then(value => {
+                let [firstimgArr, secondimgArr] = value
+                let rootphoto = document.getElementById('photo')
+                for (let i = 0; i < firstimgArr.length; i++) {
+                    loadImage(firstimgArr[i]).then(img1 => {
+                        rootphoto.appendChild(img1)
+                        console.log('成功加载图片一')
+                        return loadImage(secondimgArr[i]);
+                    }).then(img2 => {
+                        rootphoto.appendChild(img2)
+                        consolle.log('成功加载图片二')
+                    }).catch(e => {
+                        console.log('error', e);
+                    })
+                }
+            }
+        )
+    }
+
+</script>
+</html>
