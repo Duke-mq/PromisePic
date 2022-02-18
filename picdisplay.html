@@ -21,7 +21,7 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.26.0/axios.js"></script>
 <script>
     let firstPromise = axios.get(api_a)
-    let secondPromiise = axios.get(api_b)
+    let secondPromise = axios.get(api_b)
     function loadImage(src) {
         const promise = new Promise((resolve, reject) => {
             const img = document.createElement('img');
@@ -37,7 +37,7 @@
         return promise;
     }
     function load() {
-        Promise.all([firstPromise, secondPromiise]).then(value => {
+        Promise.all([firstPromise, secondPromise]).then(value => {
                 let [firstimgArr, secondimgArr] = value
                 let rootphoto = document.getElementById('photo')
                 for (let i = 0; i < firstimgArr.length; i++) {
